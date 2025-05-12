@@ -77,3 +77,98 @@ def gerar_ingredientes():
         y = random.randint(50, ALTURA_TELA - 50)
         ingredientes.append((x, y))
     return ingredientes
+
+# Função para verificar se o jogador encontrou todos os ingredientes
+def verificar_vitoria(jogador_x, jogador_y, ingredientes):
+    for ingrediente in ingredientes:
+        if abs(jogador_x - ingrediente[0]) < 30 and abs(jogador_y - ingrediente[1]) < 30:
+            ingredientes.remove(ingrediente)
+    return len(ingredientes) == 0
+
+# Função para desenhar o caminho calculado pelo algoritmo de Dijkstra (TSP)
+def desenhar_caminho(caminho, caminho_visitado):
+    # Desenhar apenas as linhas conectando os pontos do caminho
+    for i in range(len(caminho) - 1):
+        if caminho[i] not in caminho_visitado and caminho[i+1] not in caminho_visitado:
+            pygame.draw.line(tela, (0, 255, 255), caminho[i], caminho[i+1], 2)
+
+# Função para mover os zumbis em direção ao chef
+def mover_zumbis(inimigos, jogador_x, jogador_y):
+    for i in range(len(inimigos)):
+        zumbi_x, zumbi_y = inimigos[i]
+        
+        # Movimento simples do zumbi em direção ao chef
+        if zumbi_x < jogador_x:
+            zumbi_x += 1
+        elif zumbi_x > jogador_x:
+            zumbi_x -= 1
+        
+        if zumbi_y < jogador_y:
+            zumbi_y += 1
+        elif zumbi_y > jogador_y:
+            zumbi_y -= 1
+
+        inimigos[i] = (zumbi_x, zumbi_y)
+
+# Grafo (Agora, o grafo está fora da função jogo para ser acessado globalmente)
+grafo = {}
+
+# Função principal do jogo
+def jogo():
+    jogador_x = LARGURA_TELA // 2
+    jogador_y = ALTURA_TELA // 2
+    ingredientes = gerar_ingredientes()
+
+    # Inimigos engraçados como "zumbis dançarinos"
+    inimigos = [(random.randint(100, 700), random.randint(100, 500)) for _ in range(3)]
+
+    # Posição inicial do chef
+    chef_inicio = (jogador_x, jogador_y)
+
+    # Resolver o TSP e obter o melhor caminho para pegar todos os ingredientes
+    melhor_caminho = tsp(chef_inicio, ingredientes)
+
+    # Lista para rastrear o caminho já percorrido
+    caminho_visitado = []
+
+    # Rodando o jogo
+    jogo_rodando = True
+    while jogo_rodando:
+        tela.fill((0, 0, 0))  # Limpar a tela antes de desenhar (sem fundo)
+
+        # Verificando eventos
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                jogo_rodando = False
+
+        # Movimentação do jogador
+        teclas = pygame.key.get_pressed()
+        jogador_x, jogador_y = mover_jogador(jogador_x, jogador_y, teclas)
+
+        # Verificar se o jogador chegou a um ponto de ingrediente e atualizar o grafo
+        for ingrediente in ingredientes[:]:
+            if abs(jogador_x - ingrediente[0]) < 30 and abs(jogador_y - ingrediente[1]) < 30:
+                ingredientes.remove(ingrediente)
+                caminho_visitado.append(ingrediente)  # Marcar o ingrediente como visitado
+
+        # Desenhar o jogador, os ingredientes e inimigos
+        desenhar_jogador(jogador_x, jogador_y)
+        desenhar_ingredientes(ingredientes)
+        desenhar_inimigos(inimigos)
+
+        # Desenhar o caminho calculado, apagando o que já foi percorrido
+        desenhar_caminho(melhor_caminho, caminho_visitado)
+
+
+        # Verificar se o jogador coletou todos os ingredientes
+        if verificar_vitoria(jogador_x, jogador_y, ingredientes):
+            print("Você coletou todos os ingredientes secretos! Vitória!")
+            jogo_rodando = False
+
+        pygame.display.update()
+        clock.tick(60)  # 60 frames por segundo
+
+    pygame.quit()
+
+# Iniciar o jogo
+jogo()
