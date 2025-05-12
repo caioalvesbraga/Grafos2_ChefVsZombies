@@ -159,6 +159,14 @@ def jogo():
         # Desenhar o caminho calculado, apagando o que já foi percorrido
         desenhar_caminho(melhor_caminho, caminho_visitado)
 
+        # Movimentar os zumbis em direção ao chef
+        mover_zumbis(inimigos, jogador_x, jogador_y)
+
+        # Verificar se o jogador colidiu com um inimigo (zumbi dançarino)
+        for inimigo in inimigos:
+            if abs(jogador_x - inimigo[0]) < 20 and abs(jogador_y - inimigo[1]) < 20:
+                print("Você foi pego por um zumbi dançarino!")
+                jogo_rodando = False
 
         # Verificar se o jogador coletou todos os ingredientes
         if verificar_vitoria(jogador_x, jogador_y, ingredientes):
