@@ -3,13 +3,12 @@
 **Número da Lista**: X<br>
 **Conteúdo da Disciplina**: Grafos 2<br>
 **Video da apresentação**: [Grafos2_ChefVsZombies
-](https://youtu.be/ZXEWLwLtZCQ)<br>
+](https://youtu.be/zb7NTT11jgI)<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
 | 211030694 | Caio Felipe Alves Braga |
-| 211039617 | Maria Luisa Alves Rodrigues |
 
 
 ## Sobre  
@@ -17,7 +16,10 @@ Este projeto é uma aplicação desenvolvida com **Pygame** para a disciplina de
 Desta vez, implementamos uma solução baseada no **Problema do Caixeiro Viajante (TSP)** para ajudar um chef desastrado a coletar ingredientes em um cenário caótico, repleto de zumbis dançarinos. O chef deve visitar todos os ingredientes seguindo o menor caminho possível, enquanto desvia dos zumbis.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+![image](https://github.com/user-attachments/assets/af8e7f7a-a324-473a-9621-9d74c87278f3)
+
+![image](https://github.com/user-attachments/assets/20a22cee-0483-4cf4-ba6d-97747af46ebf)
+
 
 ## Instalação
 **Linguagem**: Python  
